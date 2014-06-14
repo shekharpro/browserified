@@ -38,12 +38,12 @@ app.controller('AboutCtrl', ['$scope', AboutCtrl]);
 //   }
 // ]);
 
-// var WelcomeCtrl = require('./controllers/WelcomeCtrl');
-// app.controller('WelcomeCtrl', ['$scope', WelcomeCtrl]);
-//
-// var AboutCtrl = require('./controllers/AboutCtrl');
-// app.controller('AboutCtrl', ['$scope', AboutCtrl]);
 
-//
-// var ContactCtrl = require('./controllers/ContactCtrl');
-// app.controller('ContactCtrl', ['$scope', ContactCtrl]);
+var ContactCtrl = require('./controllers/ContactCtrl');
+app.controller('ContactCtrl', ['$scope', ContactCtrl]);
+
+
+
+
+// directive
+app.directive('testDir', require('./directives/test-directive'));

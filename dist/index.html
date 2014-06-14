@@ -16,10 +16,16 @@
         <p>{{testAboutVar}}</p>
     </div>
 
-    <!-- <div ng-controller='ContactCtrl'>
+    <div ng-controller='ContactCtrl'>
         <h1>My Awesome App -- Contact</h1>
         <p>{{testContactVar}}</p>
-    </div> -->
+        <input type="text" ng-model="firstname"/>
+        <input type="text" ng-model="lastname"/>
+
+        <div>Testing Directive .... </div>
+        <h4><test-dir firstname="DDDDD" lastname="LLLLL"></test-dir></h4>
+        <h5>{{message}}</h5>
+    </div>
 </body>
 
 </html>
