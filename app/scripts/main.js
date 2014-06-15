@@ -14,6 +14,7 @@ app.controller('WelcomeCtrl', ['$scope', WelcomeCtrl]);
 var AboutCtrl = require('./controllers/AboutCtrl');
 app.controller('AboutCtrl', ['$scope', AboutCtrl]);
 
+
 // var app = angular.module('myApp', ['uiRouter']);
 // app.config(['$stateProvider',
 //   function($stateProvider) {

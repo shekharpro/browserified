@@ -20,6 +20,9 @@ var embedlr = require('gulp-embedlr'),
   config = require('./server/config/env/' + process.env.NODE_ENV),
   serverport = process.env.PORT || 5000;
 
+
+  var peopleService = require('./app/scripts/services/PeopleService')();
+
 // Set up an express server (not starting it yet)
 var server = express();
 // Add live reload
@@ -29,11 +32,17 @@ server.use(livereload({
 // Use our 'dist' folder as rootfolder
 server.use(express.static('./dist'));
 // Because I like HTML5 pushstate .. this redirects everything back to our index.html
-server.all('/*', function(req, res) {
+server.all('/', function(req, res) {
   res.sendfile('index.html', {
     root: 'dist'
   });
 });
+
+// call Angular service to fetch people JSON
+server.get('/people', function(req, res) {
+  res.json(peopleService.getPeopleDetails());
+});
+
 // // Express settings
 // require('./server/config/express')(server);
 
