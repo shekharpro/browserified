@@ -10,7 +10,20 @@ var express = require('express'),
 /**
  * Express configuration
  */
-module.exports = function(app) {
+module.exports = function(server,livereloadport) {
+
+
+    // ###### EXPRESS FILE CONTENTS ######
+
+    // Add live reload
+    server.use(livereload({
+      port: livereloadport
+    }));
+
+    // Use our 'dist' folder as rootfolder
+    server.use(express.static('./dist'));
+
+
     // app.configure('development', function() {
     //     app.use(require('connect-livereload')());
 
@@ -49,7 +62,7 @@ module.exports = function(app) {
 
         // Use our 'dist' folder as rootfolder
         // app.use(express.static('../dist'));
-       
+
 
         // app.set('views', config.root + '/app/views');
         // app.set('views', config.root + '/app/views');
@@ -77,7 +90,7 @@ module.exports = function(app) {
 
     //     // We are going to protect /api routes with JWT
     //     app.use('/api/**/*', expressJwt({
-    //         secret: "secret" // TODO :: FIXME
+    //         secret: "secret" //
     //     }));
 
     //     app.use(express.json());
@@ -114,8 +127,8 @@ module.exports = function(app) {
     // $ curl http://localhost:3000/notfound -H "Accept: application/json"
     // $ curl http://localhost:3000/notfound -H "Accept: text/plain"
 
-        
-    app.use(function(req, res, next) {
+
+    server.use(function(req, res, next) {
         res.status(404);
 
         // respond with html page
@@ -150,7 +163,7 @@ module.exports = function(app) {
     // would remain being executed, however here
     // we simply respond with an error page.
 
-    app.use(function(err, req, res, next) {
+    server.use(function(err, req, res, next) {
         // we may use properties of the error object
         // here and next(err) appropriately, or if
         // we possibly recovered from the error, simply next().
@@ -161,21 +174,21 @@ module.exports = function(app) {
     });
 
     // Routes
-    app.get('/404', function(req, res, next) {
+    server.get('/404', function(req, res, next) {
         // trigger a 404 since no other middleware
         // will match /404 after this one, and we're not
         // responding here
         next();
     });
 
-    app.get('/403', function(req, res, next) {
+    server.get('/403', function(req, res, next) {
         // trigger a 403 error
         var err = new Error('not allowed!');
         err.status = 403;
         next(err);
     });
 
-    app.get('/500', function(req, res, next) {
+    server.get('/500', function(req, res, next) {
         // trigger a generic (500) error
         console.log('generic' + res);
         next(new Error('keyboard cat!'));

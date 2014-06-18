@@ -1,5 +1,4 @@
-process.env.NODE_ENV = process.env.NODE_ENV || 'test';
-process.env.TMPDIR = './' || '/tmp';
+
 
 var gulp = require('gulp'),
   gutil = require('gulp-util'),
@@ -16,65 +15,32 @@ var embedlr = require('gulp-embedlr'),
   lrserver = require('tiny-lr')(),
   express = require('express'),
   livereloadport = 35729,
-  livereload = require('connect-livereload'),
-  config = require('./server/config/env/' + process.env.NODE_ENV),
-  serverport = process.env.PORT || 5000;
+  livereload = require('connect-livereload');
 
 
-  var peopleService = require('./app/scripts/services/PeopleService')();
-
-// Set up an express server (not starting it yet)
+// Routing
+// Routes Settings
 var server = express();
-// Add live reload
-server.use(livereload({
-  port: livereloadport
-}));
-// Use our 'dist' folder as rootfolder
-server.use(express.static('./dist'));
-// Because I like HTML5 pushstate .. this redirects everything back to our index.html
-server.all('/', function(req, res) {
-  res.sendfile('index.html', {
-    root: 'dist'
-  });
-});
+require('./server/routes')(server);
 
-// call Angular service to fetch people JSON
-server.get('/people', function(req, res) {
-  res.json(peopleService.getPeopleDetails());
-});
+// Express settings
+// Set up an express server (not starting it yet)
+require('./server/config/express')(server, livereloadport);
 
-// // Express settings
-// require('./server/config/express')(server);
-
-// // Routing
-// require('./server/routes')(server);
 
 // Dev task
+// require('./server/server')(server);
+// ######### SERVER START FILE CONTENTS #######
 gulp.task('dev', ['views', 'styles', 'lint', 'browserify'], function() {
   // Start webserver
-  server.listen(serverport);
+  require('./server/server')(server);
+
+
   // Start live reload
   lrserver.listen(livereloadport);
   // Run the watch task, to keep taps on changes
   gulp.run('watch');
 });
-// gulp.task('dev', ['views', 'styles', 'lint', 'browserify'], function() {
-//     // Start webserver
-
-//     // In the if condition the the environment will be checked and server will start accordingly
-//     // Start server
-
-//     // if ((process.env.NODE_ENV !== 'test') && (process.env.NODE_ENV !== 'development')) {
-//         server.listen(serverport, function() {
-//             console.log('Express server listening on port %d in %s mode', config.port, server.get('env'));
-
-//         // });
-//     }
-//     // Start live reload
-//     lrserver.listen(livereloadport);
-//     // Run the watch task, to keep taps on changes
-//     gulp.run('watch');
-// });
 
 // JSHint task
 gulp.task('lint', function() {
