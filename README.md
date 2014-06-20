@@ -20,3 +20,4 @@ TODOs -
 2) make services, directives, filters, interceptors work with Angular
 3) use code written in angular modules from node environment
 4) AJAX calls using superagent
+5) Integration 
